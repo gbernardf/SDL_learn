@@ -21,18 +21,12 @@ int main(int argc, char* argv[]) {
     } else {
 
         //create window
-        window = SDL_CreateWindow("SDL tut 01",
-                                  SDL_WINDOWPOS_UNDEFINED,
-                                  SDL_WINDOWPOS_UNDEFINED,
-                                  SCREEN_WIDTH,
-                                  SCREEN_HEIGHT,
-                                  SDL_WINDOW_SHOWN
-                                  );
+        window = toolbox.createWindow();
         if (window == NULL) {
             printf("Window could not be created! SDL_Error:%s\n", SDL_GetError());
         } else {
 
-            string path = "/home/gui/CODE/SDL/SDL_GAME_1/FILES/imgs/back.bmp";
+            string path = "../FILES/imgs/back.bmp";
             background = SDL_LoadBMP(path.c_str());
 
             background = toolbox.loadImage(path);

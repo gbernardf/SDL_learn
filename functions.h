@@ -14,6 +14,7 @@ public:
     //virtual ~functions();
 
     SDL_Surface* loadImage(string imagePath);
+    SDL_Window* createWindow();
 
 private:
     int screenWidth;
