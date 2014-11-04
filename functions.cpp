@@ -22,12 +22,19 @@ SDL_Surface* functions::loadImage(string imagePath){
 }
 
 
-SDL_Window *functions::createWindow(){
-    return SDL_CreateWindow("SDL tut 01",
+SDL_Window *functions::createWindow(string windowName){
+    return SDL_CreateWindow(windowName.c_str(),
                             SDL_WINDOWPOS_UNDEFINED,
                             SDL_WINDOWPOS_UNDEFINED,
                             screenWidth,
                             screenHeight,
                             SDL_WINDOW_SHOWN
                             );
+}
+
+void functions::applyImage(SDL_Surface* src, SDL_Surface* dest, int x, int y){
+    SDL_Rect position;
+    position.x = x;
+    position.y = y;
+    SDL_BlitSurface(src,NULL,dest,&position);
 }
