@@ -2,6 +2,7 @@
 #define	FUNCTIONS_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 #include <string>
 
@@ -15,11 +16,14 @@ public:
 
     SDL_Surface* loadImage(string imagePath);
     void applyImage(SDL_Surface* src, SDL_Surface* dest, int x, int y);
+    void applyScaledImage(SDL_Surface* src, SDL_Surface* dest,SDL_Rect* stretchRect);
     SDL_Window* createWindow(string windowName);
+    void setScreenSurface(SDL_Surface* screen);
 
 private:
     int screenWidth;
     int screenHeight;
+    SDL_Surface* screen;
 
 };
 

@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
     SDL_Surface* screenSurface = NULL;
     SDL_Surface* background = NULL;
     SDL_Surface* player = NULL;
+    SDL_Surface* sol = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Init error ! SDL_Error: %s\n", SDL_GetError());
@@ -30,21 +31,24 @@ int main(int argc, char* argv[]) {
 
             string backPath = IMG_PATH + "back.bmp";
             string playerPath = IMG_PATH + "_carreGob.bmp";
+            string solPath = IMG_PATH + "sol.bmp";
 
-            //background = SDL_LoadBMP(path.c_str());
-            player = toolbox.loadImage(playerPath);
-            background = toolbox.loadImage(backPath);
-            if(background == NULL)
-                std::cout<<"SDL_LoadBMP failed." <<std::endl;
             //get window surface
             screenSurface = SDL_GetWindowSurface(window);
+            toolbox.setScreenSurface(screenSurface);
+
+            player = toolbox.loadImage(playerPath);
+            background = toolbox.loadImage(backPath);
+            sol = toolbox.loadImage(solPath);
+
             toolbox.applyImage(background,screenSurface,0,0);
+            toolbox.applyImage(sol,screenSurface,0,0);
             toolbox.applyImage(player,screenSurface,304,160);
 
             SDL_UpdateWindowSurface(window);
             bool run = true;
             do{
-                while(SDL_PollEvent(&event)){
+                while(SDL_PollEvent(&event) != 0){
                     if(event.type == SDL_QUIT)
                         run = false;
                 }
