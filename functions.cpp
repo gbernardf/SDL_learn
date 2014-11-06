@@ -23,6 +23,7 @@ SDL_Surface* functions::loadImage(string imagePath){
         optimizedImage = SDL_ConvertSurface(loadedImage,screen->format,NULL);
         SDL_FreeSurface(loadedImage);
     }
+    loadedSurfaces.push_back(optimizedImage);
     return optimizedImage;
 }
 
@@ -46,5 +47,12 @@ void functions::applyImage(SDL_Surface* src, SDL_Surface* dest, int x, int y){
 
 void functions::applyScaledImage(SDL_Surface *src, SDL_Surface *dest, SDL_Rect *stretchRect){
     SDL_BlitScaled(src,NULL,dest,stretchRect);
+}
+
+void functions::cleanSurfaces(){
+    while(!loadedSurfaces.empty()){
+        SDL_FreeSurface(loadedSurfaces.front());
+        loadedSurfaces.pop_front();
+    }
 }
 

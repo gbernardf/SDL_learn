@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <string>
+#include <list>
 
 using namespace std;
 
@@ -19,11 +20,13 @@ public:
     void applyScaledImage(SDL_Surface* src, SDL_Surface* dest,SDL_Rect* stretchRect);
     SDL_Window* createWindow(string windowName);
     void setScreenSurface(SDL_Surface* screen);
+    void cleanSurfaces();
 
 private:
     int screenWidth;
     int screenHeight;
     SDL_Surface* screen;
+    list<SDL_Surface*> loadedSurfaces;
 
 };
 
