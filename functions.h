@@ -16,6 +16,7 @@ public:
     //virtual ~functions();
 
     SDL_Surface* loadImage(string imagePath);
+    SDL_Texture* loadTexture(string imagePath, SDL_Renderer *renderer);
     void applyImage(SDL_Surface* src, SDL_Surface* dest, int x, int y);
     void applyScaledImage(SDL_Surface* src, SDL_Surface* dest,SDL_Rect* stretchRect);
     SDL_Window* createWindow(string windowName);

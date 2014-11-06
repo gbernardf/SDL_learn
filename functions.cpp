@@ -27,6 +27,13 @@ SDL_Surface* functions::loadImage(string imagePath){
     return optimizedImage;
 }
 
+SDL_Texture* functions::loadTexture(string imagePath, SDL_Renderer* renderer){
+    SDL_Surface* loadedImage = loadImage(imagePath);
+    SDL_Texture* loadedTexture = SDL_CreateTextureFromSurface(renderer,loadedImage);
+    SDL_FreeSurface(loadedImage);
+    return loadedTexture;
+}
+
 
 SDL_Window *functions::createWindow(string windowName){
     return SDL_CreateWindow(windowName.c_str(),
