@@ -15,7 +15,7 @@ void functions::setScreenSurface(SDL_Surface* screen){
 
 
 SDL_Surface* functions::loadImage(string imagePath){
-    SDL_Surface* loadedImage = SDL_LoadBMP(imagePath.c_str());
+    SDL_Surface* loadedImage = IMG_Load(imagePath.c_str());
     SDL_Surface* optimizedImage = NULL;
     if(loadedImage == NULL){
         cout<<"Cant load image: " + imagePath + ".\n";

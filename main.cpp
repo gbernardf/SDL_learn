@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+//#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include "functions.h"
 
@@ -18,6 +19,7 @@ int main(int argc, char* argv[]) {
     SDL_Surface* background = NULL;
     SDL_Surface* player = NULL;
     SDL_Surface* sol = NULL;
+    SDL_Surface* up = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Init error ! SDL_Error: %s\n", SDL_GetError());
@@ -25,6 +27,8 @@ int main(int argc, char* argv[]) {
         SDL_Event event;
         //create window
         window = toolbox.createWindow("SDL Game learn");
+        int imgFlags = IMG_INIT_PNG;
+        IMG_Init(imgFlags);
         if (window == NULL) {
             printf("Window could not be created! SDL_Error:%s\n", SDL_GetError());
         } else {
@@ -33,6 +37,7 @@ int main(int argc, char* argv[]) {
             string playerPath = IMG_PATH + "_carreGob.bmp";
             string solPath = IMG_PATH + "sol.bmp";
 
+
             //get window surface
             screenSurface = SDL_GetWindowSurface(window);
             toolbox.setScreenSurface(screenSurface);
@@ -40,10 +45,12 @@ int main(int argc, char* argv[]) {
             player = toolbox.loadImage(playerPath);
             background = toolbox.loadImage(backPath);
             sol = toolbox.loadImage(solPath);
+            up = toolbox.loadImage(IMG_PATH + "up.png");
 
             toolbox.applyImage(background,screenSurface,0,0);
             toolbox.applyImage(sol,screenSurface,0,0);
             toolbox.applyImage(player,screenSurface,304,160);
+            toolbox.applyImage(up,screenSurface,304,110);
 
             SDL_UpdateWindowSurface(window);
             bool run = true;
