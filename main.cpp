@@ -19,28 +19,42 @@ enum KeyPressSurfaces{
 int main(int argc, char* argv[]) {
 
     functions toolbox(SCREEN_WIDTH, SCREEN_HEIGHT);
-    SDL_Surface* keySurfaces[KEY_PRESS_SURFACE_TOTAL];
+    SDL_Texture* keyTextures[KEY_PRESS_SURFACE_TOTAL];
 
     //Render window
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
 
     SDL_Surface* screenSurface = NULL;
-    SDL_Surface* background = NULL;
-    SDL_Surface* player = NULL;
-
-    SDL_Texture* backgroundTex = NULL;
     SDL_Texture* playerTex = NULL;
-    SDL_Texture* lftTex = NULL;
+
+    SDL_Rect topRightViewPort;
+    SDL_Rect topLeftViewPort;
+    SDL_Rect bottomViewPort;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("Init error ! SDL_Error: %s\n", SDL_GetError());
     } else {
         SDL_Event event;
 
+        topLeftViewPort.x = 0;
+        topLeftViewPort.y = 0;
+        topLeftViewPort.w = SCREEN_WIDTH / 2;
+        topLeftViewPort.h = 100;
+
+        topRightViewPort.x = SCREEN_WIDTH / 2;
+        topRightViewPort.y = 0;
+        topRightViewPort.w = SCREEN_WIDTH / 2;
+        topRightViewPort.h = 100;
+
+        bottomViewPort.x = 0;
+        bottomViewPort.y = 100;
+        bottomViewPort.w = SCREEN_WIDTH;
+        bottomViewPort.h = SCREEN_HEIGHT - 100;
+
         window = toolbox.createWindow("SDL Game learn");
         renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
-        //SDL_SetRenderDrawColor(renderer,0x00,0xFF,0x45,0xFF);
+        SDL_SetRenderDrawColor(renderer,0x00,0x00,0x00,0x00);
         SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_ADD);
         int imgFlags = IMG_INIT_PNG;
         IMG_Init(imgFlags);
@@ -58,50 +72,42 @@ int main(int argc, char* argv[]) {
             screenSurface = SDL_GetWindowSurface(window);
             toolbox.setScreenSurface(screenSurface);
 
-            player = toolbox.loadImage(playerPath);
-            background = toolbox.loadImage(backPath);
-            keySurfaces[KEY_PRESS_SURFACE_UP] = toolbox.loadImage(upPath);
-            keySurfaces[KEY_PRESS_SURFACE_LEFT] = toolbox.loadImage(lftPath);
-            keySurfaces[KEY_PRESS_SURFACE_RIGHT] = toolbox.loadImage(riPath);
-            keySurfaces[KEY_PRESS_SURFACE_DOWN] = toolbox.loadImage(dwPath);
-
-            lftTex = toolbox.loadTexture(lftPath,renderer);
-            SDL_SetTextureBlendMode(lftTex,SDL_BLENDMODE_BLEND);
-            SDL_SetTextureAlphaMod(lftTex,SDL_ALPHA_TRANSPARENT);
             playerTex = toolbox.loadTexture(playerPath,renderer);
+
+            keyTextures[KEY_PRESS_SURFACE_UP] = toolbox.loadTexture(upPath,renderer);
+            keyTextures[KEY_PRESS_SURFACE_LEFT] = toolbox.loadTexture(lftPath,renderer);
+            keyTextures[KEY_PRESS_SURFACE_RIGHT] = toolbox.loadTexture(riPath,renderer);
+            keyTextures[KEY_PRESS_SURFACE_DOWN] = toolbox.loadTexture(dwPath,renderer);
 
 
 
             bool run = true;
             do{
                 while(SDL_PollEvent(&event) != 0){
-//                    toolbox.applyImage(background,screenSurface,0,0);
-//                    toolbox.applyImage(player,screenSurface,304,160);
+                    SDL_RenderClear(renderer);
+                    SDL_RenderSetViewport(renderer,&bottomViewPort);
+                    toolbox.renderTexture(playerTex,renderer,304,50);
                     if(event.type == SDL_QUIT){
                         run = false;
                     }
-//                    else if(event.type == SDL_KEYDOWN){
+                    else if(event.type == SDL_KEYDOWN){
+                        SDL_RenderSetViewport(renderer,&topRightViewPort);
+                        switch(event.key.keysym.sym){
+                            case SDLK_UP:
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_UP],renderer,150,25);break;
 
-//                        switch(event.key.keysym.sym){
-//                            case SDLK_UP:
-//                            toolbox.applyImage(keySurfaces[KEY_PRESS_SURFACE_UP],screenSurface,304,110);break;
+                            case SDLK_DOWN:
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DOWN],renderer,150,25);break;
 
-//                            case SDLK_DOWN:
-//                            toolbox.applyImage(keySurfaces[KEY_PRESS_SURFACE_DOWN],screenSurface,304,200);break;
+                            case SDLK_LEFT:
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_LEFT],renderer,150,25);break;
 
-//                            case SDLK_LEFT:
-//                            toolbox.applyImage(keySurfaces[KEY_PRESS_SURFACE_LEFT],screenSurface,254,160);break;
+                            case SDLK_RIGHT:
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_RIGHT],renderer,150,25);break;
 
-//                            case SDLK_RIGHT:
-//                            toolbox.applyImage(keySurfaces[KEY_PRESS_SURFACE_RIGHT],screenSurface,354,160);break;
+                        }
 
-//                        }
-
-//                    }
-//                    SDL_UpdateWindowSurface(window);
-                    SDL_RenderClear(renderer);
-                    SDL_RenderCopy(renderer,playerTex,NULL,NULL);
-                    SDL_RenderCopy(renderer,lftTex,NULL,NULL);
+                    }
                     SDL_RenderPresent(renderer);
                 }
             }while(run);
@@ -110,8 +116,10 @@ int main(int argc, char* argv[]) {
     }
 
     toolbox.cleanSurfaces();
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
+    IMG_Quit();
     SDL_Quit();
 
     return 0;
