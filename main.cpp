@@ -94,8 +94,8 @@ int main(int argc, char* argv[]) {
                     SDL_RenderClear(renderer);
                     SDL_RenderSetViewport(renderer,&totalViewPort);
                     toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DEFAULT],renderer,0,0);
-                    SDL_RenderSetViewport(renderer,&bottomViewPort);
-                    toolbox.renderTexture(playerTex,renderer,304,50);
+                    int playerX = 304;
+                    int playerY = 50;
                     if(event.type == SDL_QUIT){
                         run = false;
                     }
@@ -103,19 +103,30 @@ int main(int argc, char* argv[]) {
                         SDL_RenderSetViewport(renderer,&topRightViewPort);
                         switch(event.key.keysym.sym){
                             case SDLK_UP:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_UP],renderer,150,25);break;
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_UP],renderer,150,25);
+                            SDL_RenderSetViewport(renderer,&bottomViewPort);
+                            toolbox.renderTexture(playerTex,renderer,playerX ,playerY - 10);break;
 
                             case SDLK_DOWN:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DOWN],renderer,150,25);break;
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DOWN],renderer,150,25);
+                            SDL_RenderSetViewport(renderer,&bottomViewPort);
+                            toolbox.renderTexture(playerTex,renderer,playerX,playerY + 10);break;
 
                             case SDLK_LEFT:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_LEFT],renderer,150,25);break;
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_LEFT],renderer,150,25);
+                            SDL_RenderSetViewport(renderer,&bottomViewPort);
+                            toolbox.renderTexture(playerTex,renderer,playerX - 10,playerY);break;
 
                             case SDLK_RIGHT:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_RIGHT],renderer,150,25);break;
+                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_RIGHT],renderer,150,25);
+                            SDL_RenderSetViewport(renderer,&bottomViewPort);
+                            toolbox.renderTexture(playerTex,renderer,playerX + 10,playerY);break;
 
                         }
 
+                    }else{
+                        SDL_RenderSetViewport(renderer,&bottomViewPort);
+                        toolbox.renderTexture(playerTex,renderer,playerX,playerY);
                     }
                     SDL_RenderPresent(renderer);
                 }
