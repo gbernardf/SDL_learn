@@ -30,7 +30,8 @@ SDL_Surface* functions::loadImage(string imagePath){
 SDL_Texture* functions::loadTexture(string imagePath, SDL_Renderer* renderer){
     SDL_Surface* loadedImage = loadImage(imagePath);
     SDL_Texture* loadedTexture = SDL_CreateTextureFromSurface(renderer,loadedImage);
-    SDL_FreeSurface(loadedImage);
+    //SDL_FreeSurface(loadedImage);
+    loadedTextures.push_back(loadedTexture);
     return loadedTexture;
 }
 
@@ -56,10 +57,23 @@ void functions::applyScaledImage(SDL_Surface *src, SDL_Surface *dest, SDL_Rect *
     SDL_BlitScaled(src,NULL,dest,stretchRect);
 }
 
+void functions::renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y){
+    SDL_Rect destRect;
+    destRect.x = x;
+    destRect.y = y;
+    SDL_QueryTexture(texture,NULL,NULL,&destRect.w,&destRect.h);
+
+    SDL_RenderCopy(renderer,texture,NULL,&destRect);
+}
+
 void functions::cleanSurfaces(){
     while(!loadedSurfaces.empty()){
         SDL_FreeSurface(loadedSurfaces.front());
         loadedSurfaces.pop_front();
+    }
+    while(!loadedTextures.empty()){
+        SDL_DestroyTexture(loadedTextures.front());
+        loadedTextures.pop_front();
     }
 }
 

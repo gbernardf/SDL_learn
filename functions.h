@@ -21,6 +21,7 @@ public:
     void applyScaledImage(SDL_Surface* src, SDL_Surface* dest,SDL_Rect* stretchRect);
     SDL_Window* createWindow(string windowName);
     void setScreenSurface(SDL_Surface* screen);
+    void renderTexture(SDL_Texture* texture,SDL_Renderer *renderer, int x, int y);
     void cleanSurfaces();
 
 private:
@@ -28,6 +29,7 @@ private:
     int screenHeight;
     SDL_Surface* screen;
     list<SDL_Surface*> loadedSurfaces;
+    list<SDL_Texture*> loadedTextures;
 
 };
 
