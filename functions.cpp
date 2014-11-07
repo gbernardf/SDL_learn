@@ -21,6 +21,7 @@ SDL_Surface* functions::loadImage(string imagePath){
         cout<<"Cant load image: " + imagePath + ".\n";
     }else{
         optimizedImage = SDL_ConvertSurface(loadedImage,screen->format,NULL);
+        SDL_SetColorKey( optimizedImage, SDL_TRUE, SDL_MapRGB( optimizedImage->format, 0xFF, 0x00, 0xFF ) );
         SDL_FreeSurface(loadedImage);
     }
     loadedSurfaces.push_back(optimizedImage);

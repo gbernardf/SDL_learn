@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
     SDL_Rect topRightViewPort;
     SDL_Rect topLeftViewPort;
     SDL_Rect bottomViewPort;
+    SDL_Rect totalViewPort;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("Init error ! SDL_Error: %s\n", SDL_GetError());
@@ -52,6 +53,11 @@ int main(int argc, char* argv[]) {
         bottomViewPort.w = SCREEN_WIDTH;
         bottomViewPort.h = SCREEN_HEIGHT - 100;
 
+        totalViewPort.x = 0;
+        totalViewPort.y = 0;
+        totalViewPort.w = SCREEN_WIDTH;
+        totalViewPort.h = SCREEN_HEIGHT;
+
         window = toolbox.createWindow("SDL Game learn");
         renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
         SDL_SetRenderDrawColor(renderer,0x00,0x00,0x00,0x00);
@@ -64,16 +70,17 @@ int main(int argc, char* argv[]) {
 
             string backPath = IMG_PATH + "back.png";
             string playerPath = IMG_PATH + "_carreGob.png";
-            string upPath = IMG_PATH + "up.png";
-            string lftPath = IMG_PATH + "lft.png";
-            string riPath = IMG_PATH + "ri.png";
-            string dwPath = IMG_PATH + "dw.png";
+            string upPath = IMG_PATH + "up_colorKey.png";
+            string lftPath = IMG_PATH + "lft_colorKey.png";
+            string riPath = IMG_PATH + "ri_colorKey.png";
+            string dwPath = IMG_PATH + "dw_colorKey.png";
 
             screenSurface = SDL_GetWindowSurface(window);
             toolbox.setScreenSurface(screenSurface);
 
             playerTex = toolbox.loadTexture(playerPath,renderer);
 
+            keyTextures[KEY_PRESS_SURFACE_DEFAULT] = toolbox.loadTexture(backPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_UP] = toolbox.loadTexture(upPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_LEFT] = toolbox.loadTexture(lftPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_RIGHT] = toolbox.loadTexture(riPath,renderer);
@@ -85,6 +92,8 @@ int main(int argc, char* argv[]) {
             do{
                 while(SDL_PollEvent(&event) != 0){
                     SDL_RenderClear(renderer);
+                    SDL_RenderSetViewport(renderer,&totalViewPort);
+                    toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DEFAULT],renderer,0,0);
                     SDL_RenderSetViewport(renderer,&bottomViewPort);
                     toolbox.renderTexture(playerTex,renderer,304,50);
                     if(event.type == SDL_QUIT){
