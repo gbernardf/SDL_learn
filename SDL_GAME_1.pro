@@ -5,15 +5,18 @@ CONFIG -= qt
 
 INCLUDEPATH += /usr/include/SDL2
 LIBS += -lSDL2
+LIBS += -lSDL2_image
 
 SOURCES += main.cpp \
-    functions.cpp
+    functions.cpp \
+    sprite.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
 
 HEADERS += \
-    functions.h
+    functions.h \
+    sprite.h
 
 
 
