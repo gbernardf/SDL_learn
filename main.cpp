@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
 
     SDL_Surface* screenSurface = NULL;
     SDL_Texture* playerTex = NULL;
+    SDL_Texture* champTex = NULL;
 
     SDL_Rect topRightViewPort;
     SDL_Rect topLeftViewPort;
@@ -70,6 +71,7 @@ int main(int argc, char* argv[]) {
 
             string backPath = IMG_PATH + "back.png";
             string playerPath = IMG_PATH + "_carreGob.png";
+            string champPath = IMG_PATH + "champ_colorKey.png";
             string upPath = IMG_PATH + "up_colorKey.png";
             string lftPath = IMG_PATH + "lft_colorKey.png";
             string riPath = IMG_PATH + "ri_colorKey.png";
@@ -79,6 +81,7 @@ int main(int argc, char* argv[]) {
             toolbox.setScreenSurface(screenSurface);
 
             playerTex = toolbox.loadTexture(playerPath,renderer);
+            champTex = toolbox.loadTexture(champPath,renderer);
 
             keyTextures[KEY_PRESS_SURFACE_DEFAULT] = toolbox.loadTexture(backPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_UP] = toolbox.loadTexture(upPath,renderer);
@@ -93,7 +96,10 @@ int main(int argc, char* argv[]) {
                 while(SDL_PollEvent(&event) != 0){
                     SDL_RenderClear(renderer);
                     SDL_RenderSetViewport(renderer,&totalViewPort);
+
                     toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DEFAULT],renderer,0,0);
+                    toolbox.renderTexture(champTex,renderer,10,10);
+
                     int playerX = 304;
                     int playerY = 50;
                     if(event.type == SDL_QUIT){
@@ -127,6 +133,7 @@ int main(int argc, char* argv[]) {
                     }else{
                         SDL_RenderSetViewport(renderer,&bottomViewPort);
                         toolbox.renderTexture(playerTex,renderer,playerX,playerY);
+
                     }
                     SDL_RenderPresent(renderer);
                 }

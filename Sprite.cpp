@@ -1,5 +1,17 @@
-#include "sprite.h"
+#include "Sprite.h"
+#include "functions.h"
 
-sprite::sprite(string filepath)
+Sprite::Sprite()
 {
+    _width = 0;
+    _height = 0;
+    texture = NULL;
+}
+
+int Sprite::width(){
+	return _width;
+}
+
+int Sprite::height(){
+	return _height;
 }

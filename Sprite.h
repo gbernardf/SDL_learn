@@ -6,18 +6,19 @@
 
 using namespace std;
 
-class sprite
+class Sprite
 {
 public:
-    sprite(string filepath);
+    Sprite();
     int width();
     int height();
-    void updateTexture(string filepath);
-    ~sprite();
+    void updateTexture(SDL_Texture* newTexture);
+    ~Sprite();
 private:
     SDL_Texture* texture;
     int _width;
     int _height;
+
 };
 
 #endif // SPRITE_H
