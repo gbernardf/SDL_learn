@@ -9,14 +9,16 @@ LIBS += -lSDL2_image
 
 SOURCES += main.cpp \
     functions.cpp \
-    sprite.cpp
+    Sprite.cpp \
+    GameObject.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
 
 HEADERS += \
     functions.h \
-    sprite.h
+    Sprite.h \
+    GameObject.h
 
 
 
