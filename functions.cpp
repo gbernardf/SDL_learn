@@ -20,7 +20,7 @@ SDL_Surface* functions::loadImage(string imagePath){
     if(loadedImage == NULL){
         cout<<"Cant load image: " + imagePath + ".\n";
     }else{
-        optimizedImage = SDL_ConvertSurface(loadedImage,screen->format,NULL);
+        optimizedImage = SDL_ConvertSurface(loadedImage,screen->format,0);//NULL ?
         SDL_SetColorKey( optimizedImage, SDL_TRUE, SDL_MapRGB( optimizedImage->format, 0xFF, 0x00, 0xFF ) );
         SDL_FreeSurface(loadedImage);
     }
@@ -31,7 +31,6 @@ SDL_Surface* functions::loadImage(string imagePath){
 SDL_Texture* functions::loadTexture(string imagePath, SDL_Renderer* renderer){
     SDL_Surface* loadedImage = loadImage(imagePath);
     SDL_Texture* loadedTexture = SDL_CreateTextureFromSurface(renderer,loadedImage);
-    //SDL_FreeSurface(loadedImage);
     loadedTextures.push_back(loadedTexture);
     return loadedTexture;
 }

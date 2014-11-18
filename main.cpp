@@ -21,13 +21,14 @@ int main(int argc, char* argv[]) {
     functions toolbox(SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_Texture* keyTextures[KEY_PRESS_SURFACE_TOTAL];
 
+    Uint8 alpha = 0;
+
     //Render window
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
 
     SDL_Surface* screenSurface = NULL;
     SDL_Texture* playerTex = NULL;
-    SDL_Texture* champTex = NULL;
 
     SDL_Rect topRightViewPort;
     SDL_Rect topLeftViewPort;
@@ -71,7 +72,6 @@ int main(int argc, char* argv[]) {
 
             string backPath = IMG_PATH + "back.png";
             string playerPath = IMG_PATH + "_carreGob.png";
-            string champPath = IMG_PATH + "champ_colorKey.png";
             string upPath = IMG_PATH + "up_colorKey.png";
             string lftPath = IMG_PATH + "lft_colorKey.png";
             string riPath = IMG_PATH + "ri_colorKey.png";
@@ -81,14 +81,12 @@ int main(int argc, char* argv[]) {
             toolbox.setScreenSurface(screenSurface);
 
             playerTex = toolbox.loadTexture(playerPath,renderer);
-            champTex = toolbox.loadTexture(champPath,renderer);
 
             keyTextures[KEY_PRESS_SURFACE_DEFAULT] = toolbox.loadTexture(backPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_UP] = toolbox.loadTexture(upPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_LEFT] = toolbox.loadTexture(lftPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_RIGHT] = toolbox.loadTexture(riPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_DOWN] = toolbox.loadTexture(dwPath,renderer);
-
 
 
             bool run = true;
@@ -98,7 +96,6 @@ int main(int argc, char* argv[]) {
                     SDL_RenderSetViewport(renderer,&totalViewPort);
 
                     toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DEFAULT],renderer,0,0);
-                    toolbox.renderTexture(champTex,renderer,10,10);
 
                     int playerX = 304;
                     int playerY = 50;
@@ -106,8 +103,24 @@ int main(int argc, char* argv[]) {
                         run = false;
                     }
                     else if(event.type == SDL_KEYDOWN){
+                        if(event.key.keysym.sym == SDLK_a){
+                            if(alpha - 32 <0){
+                                alpha =0;
+                            }else{
+                                alpha -= 32;
+                            }
+                        }
+                        if(event.key.keysym.sym == SDLK_q){
+                            if(alpha + 32 > 255){
+                                alpha =255;
+                            }else{
+                                alpha += 32;
+                            }
+                        }
+                        SDL_SetTextureAlphaMod( playerTex, alpha );
                         SDL_RenderSetViewport(renderer,&topRightViewPort);
                         switch(event.key.keysym.sym){
+
                             case SDLK_UP:
                             toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_UP],renderer,150,25);
                             SDL_RenderSetViewport(renderer,&bottomViewPort);
