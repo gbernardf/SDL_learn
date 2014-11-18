@@ -3,6 +3,7 @@
 
 #include <string>
 #include <SDL2/SDL_image.h>
+#include <list>
 
 using namespace std;
 
@@ -18,6 +19,9 @@ private:
     SDL_Texture* texture;
     int _width;
     int _height;
+    SDL_Rect idleAnimation[4];
+    SDL_Rect moveAnimation[4];
+
 
 };
 
