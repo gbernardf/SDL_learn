@@ -90,6 +90,7 @@ int main(int argc, char* argv[]) {
 
 
             bool run = true;
+            bool alphaUp = true;
             do{
                 while(SDL_PollEvent(&event) != 0){
                     SDL_RenderClear(renderer);
@@ -103,16 +104,17 @@ int main(int argc, char* argv[]) {
                         run = false;
                     }
                     else if(event.type == SDL_KEYDOWN){
-                        if(event.key.keysym.sym == SDLK_a){
-                            if(alpha - 32 <0){
-                                alpha =0;
+                        if(!alphaUp){
+                            if(alpha - 32 < 0){
+                                alpha = 0;
+                                alphaUp = true;
                             }else{
                                 alpha -= 32;
                             }
-                        }
-                        if(event.key.keysym.sym == SDLK_q){
+                        }else{
                             if(alpha + 32 > 255){
-                                alpha =255;
+                                alpha = 255;
+                                alphaUp = false;
                             }else{
                                 alpha += 32;
                             }
