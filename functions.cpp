@@ -57,13 +57,17 @@ void functions::applyScaledImage(SDL_Surface *src, SDL_Surface *dest, SDL_Rect *
     SDL_BlitScaled(src,NULL,dest,stretchRect);
 }
 
-void functions::renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y){
+void functions::renderTexture(SDL_Texture *texture, SDL_Rect* srcPortion, SDL_Renderer *renderer, int x, int y){
     SDL_Rect destRect;
     destRect.x = x;
     destRect.y = y;
     SDL_QueryTexture(texture,NULL,NULL,&destRect.w,&destRect.h);
 
-    SDL_RenderCopy(renderer,texture,NULL,&destRect);
+    SDL_RenderCopy(renderer,texture,srcPortion,&destRect);
+}
+
+void functions::changeAlpha(SDL_Texture* texture, Uint8 newAlpha){
+    SDL_SetTextureAlphaMod( texture, newAlpha );
 }
 
 void functions::cleanSurfaces(){

@@ -11,7 +11,7 @@ public:
 
 private:
     SDL_Renderer* renderer;
-    Sprite sprite;
+    Sprite* sprite;
     int _posX;
     int _posY;
     Uint8 alpha;
