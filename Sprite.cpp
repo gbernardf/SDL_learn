@@ -32,6 +32,19 @@ void Sprite::updateTexture(SDL_Texture* newTexture){
     texture = newTexture;
 }
 
+void Sprite::setIdleAnimation(){
+    int i = 0;
+    do{
+        idleAnimation[i] = new SDL_Rect;
+        idleAnimation[i]->x = i*animationFrameWidth;
+        idleAnimation[i]->y = 0;
+        idleAnimation[i]->w = animationFrameWidth;
+        idleAnimation[i]->h = animationFrameHeight;
+        i++;
+    }while(i<8);
+    _currentAnimFrame = moveDownAnimation[0];
+}
+
 void Sprite::loadAnimations(){
     int i = 0;
     do{
@@ -61,6 +74,12 @@ void Sprite::loadAnimations(){
         i++;
     }while(i<4);
     _currentAnimFrame = moveDownAnimation[0];
+}
+
+void Sprite::idle(){
+    _currentAnimFrame = idleAnimation[frameNumber%8];
+    frameNumber++;
+    if(frameNumber > 40)frameNumber = 0;
 }
 
 void Sprite::moveUp(){

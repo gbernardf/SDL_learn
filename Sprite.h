@@ -18,7 +18,9 @@ public:
     int height();
     void updateTexture(SDL_Texture* newTexture);
     void loadAnimations();
+    void setIdleAnimation();
     void render( SDL_Renderer* renderer, int posX, int posY);
+    void idle();
     void moveUp();
     void moveDown();
     void moveLeft();
@@ -42,7 +44,7 @@ private:
     SDL_Rect* moveLeftAnimation[ANIMATION_FRAMES];
     SDL_Rect* moveRightAnimation[ANIMATION_FRAMES];
     SDL_Rect* moveUpAnimation[ANIMATION_FRAMES];
-    SDL_Rect* idleAnimation[ANIMATION_FRAMES];
+    SDL_Rect* idleAnimation[8];
 
     SDL_Rect* _currentAnimFrame;
 

@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 //#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include "functions.h"
 #include "Sprite.h"
@@ -29,6 +30,7 @@ int main(int argc, char* argv[]) {
 
     SDL_Surface* screenSurface = NULL;
     SDL_Texture* playerTex = NULL;
+    SDL_Texture* coinTex = NULL;
 
     SDL_Rect topRightViewPort;
     SDL_Rect topLeftViewPort;
@@ -89,7 +91,12 @@ int main(int argc, char* argv[]) {
             animTest->updateTexture(toolbox.loadTexture(IMG_PATH + "anim_colorKey.png",renderer));
             animTest->loadAnimations();
 
+            Sprite* animCoin = new Sprite(32,32);
+            animCoin->updateTexture(toolbox.loadTexture(IMG_PATH + "anim_coin_colorKey.png",renderer));
+            animCoin->setIdleAnimation();
+
             playerTex = toolbox.loadTexture(playerPath,renderer);
+            coinTex = toolbox.loadTexture(IMG_PATH + "anim_coin_colorKey.png",renderer);
 
             keyTextures[KEY_PRESS_SURFACE_DEFAULT] = toolbox.loadTexture(backPath,renderer);
             keyTextures[KEY_PRESS_SURFACE_UP] = toolbox.loadTexture(upPath,renderer);
@@ -100,17 +107,18 @@ int main(int argc, char* argv[]) {
 
             bool run = true;
             do{
+
                 while(SDL_PollEvent(&event) != 0){
                     SDL_RenderClear(renderer);
                     SDL_RenderSetViewport(renderer,&totalViewPort);
 
-                    toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DEFAULT],NULL,renderer,0,0);
 
+                    toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DEFAULT],NULL,renderer,0,0);
                     int playerX = 304;
                     int playerY = 50;
                     if(event.type == SDL_QUIT){
                         run = false;
-                    }else if(event.type == SDL_KEYDOWN){
+                    }/*else if(event.type == SDL_KEYDOWN){
 
 
                         SDL_RenderSetViewport(renderer,&topRightViewPort);
@@ -153,15 +161,22 @@ int main(int argc, char* argv[]) {
 
                         }
 
-                    }else{
+                    }*/else{
                         SDL_RenderSetViewport(renderer,&bottomViewPort);
                         toolbox.renderTexture(playerTex,NULL,renderer,playerX,playerY);
-                        animTest->render(renderer,0,0);
+                        //animTest->render(renderer,0,0);
+
+
 
                     }
                     SDL_RenderPresent(renderer);
                     SDL_Delay(40);
                 }
+//                animCoin->idle();
+//                animCoin->render(renderer,0,0);
+                toolbox.renderTexture(coinTex,NULL,renderer,0,0);
+                SDL_RenderPresent(renderer);
+                SDL_Delay(40);
 
             }while(run);
         }
