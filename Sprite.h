@@ -13,13 +13,15 @@ class Sprite
 {
 public:
     Sprite();
-    Sprite(int animWidth, int animHeight);
+    Sprite(int animWidth, int animHeight, SDL_Renderer* renderer);
     int width();
     int height();
+    SDL_Texture* getText();
+    SDL_Rect* currentFrame();
     void updateTexture(SDL_Texture* newTexture);
     void loadAnimations();
     void setIdleAnimation();
-    void render( SDL_Renderer* renderer, int posX, int posY);
+    void render( int posX, int posY, double scale);
     void idle();
     void moveUp();
     void moveDown();
@@ -28,6 +30,7 @@ public:
     ~Sprite();
 private:
     SDL_Texture* texture;
+    SDL_Renderer* renderer;
     int _width;
     int _height;
     int frameNumber;

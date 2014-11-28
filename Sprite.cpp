@@ -10,12 +10,13 @@ Sprite::Sprite()
     frameNumber = 0;
 }
 
-Sprite::Sprite(int animWidth, int animHeight){
+Sprite::Sprite(int animWidth, int animHeight, SDL_Renderer *renderer){
     _width = 0;
     _height = 0;
     texture = NULL;
     animationFrameHeight = animHeight;
     animationFrameWidth = animWidth;
+    this->renderer = renderer;
     _currentAnimFrame = NULL;
     frameNumber = 0;
 }
@@ -42,7 +43,7 @@ void Sprite::setIdleAnimation(){
         idleAnimation[i]->h = animationFrameHeight;
         i++;
     }while(i<8);
-    _currentAnimFrame = moveDownAnimation[0];
+    _currentAnimFrame = idleAnimation[0];
 }
 
 void Sprite::loadAnimations(){
@@ -106,11 +107,22 @@ void Sprite::moveRight(){
     if(frameNumber > 40)frameNumber = 0;
 }
 
-void Sprite::render(SDL_Renderer* renderer, int posX, int posY){
+void Sprite::render(int posX, int posY, double scale){
     SDL_Rect destRect;
     destRect.x = posX;
     destRect.y = posY;
-    SDL_QueryTexture(texture,NULL,NULL,&destRect.w,&destRect.h);
-
+    destRect.w = animationFrameWidth*scale;
+    destRect.h = animationFrameHeight*scale;
+    if(animationFrameWidth == 0 || animationFrameHeight == 0){
+        SDL_QueryTexture(texture,NULL,NULL,&destRect.w,&destRect.h);
+    }
     SDL_RenderCopy(renderer,texture,_currentAnimFrame,&destRect);
+}
+
+SDL_Texture* Sprite::getText(){
+    return texture;
+}
+
+SDL_Rect* Sprite::currentFrame(){
+    return _currentAnimFrame;
 }

@@ -7,12 +7,20 @@ using namespace std;
 functions::functions(int width, int height) {
     screenWidth = width;
     screenHeight = height;
+    _font = NULL;
 }
 
 void functions::setScreenSurface(SDL_Surface* screen){
     this->screen = screen;
 }
 
+void functions::setRenderer(SDL_Renderer* renderer){
+    this->renderer = renderer;
+}
+
+void functions::setFont(string fontPath){
+    _font = TTF_OpenFont( fontPath.c_str(), 28 );
+}
 
 SDL_Surface* functions::loadImage(string imagePath){
     SDL_Surface* loadedImage = IMG_Load(imagePath.c_str());
@@ -28,9 +36,17 @@ SDL_Surface* functions::loadImage(string imagePath){
     return optimizedImage;
 }
 
-SDL_Texture* functions::loadTexture(string imagePath, SDL_Renderer* renderer){
+SDL_Texture* functions::loadTexture(string imagePath){
     SDL_Surface* loadedImage = loadImage(imagePath);
     SDL_Texture* loadedTexture = SDL_CreateTextureFromSurface(renderer,loadedImage);
+    loadedTextures.push_back(loadedTexture);
+    return loadedTexture;
+}
+
+SDL_Texture* functions::loadTextureFromText(string text, SDL_Color textColor){
+    SDL_Surface* textSurface = TTF_RenderText_Solid( _font, text.c_str(), textColor );
+    SDL_Texture* loadedTexture = SDL_CreateTextureFromSurface(renderer,textSurface);
+    SDL_FreeSurface( textSurface );
     loadedTextures.push_back(loadedTexture);
     return loadedTexture;
 }
@@ -57,11 +73,14 @@ void functions::applyScaledImage(SDL_Surface *src, SDL_Surface *dest, SDL_Rect *
     SDL_BlitScaled(src,NULL,dest,stretchRect);
 }
 
-void functions::renderTexture(SDL_Texture *texture, SDL_Rect* srcPortion, SDL_Renderer *renderer, int x, int y){
+void functions::renderTexture(SDL_Texture *texture, SDL_Rect* srcPortion, int x, int y){
     SDL_Rect destRect;
     destRect.x = x;
     destRect.y = y;
     SDL_QueryTexture(texture,NULL,NULL,&destRect.w,&destRect.h);
+    while(destRect.w+destRect.x > screenWidth){
+        destRect.w = destRect.w -10;
+    }
 
     SDL_RenderCopy(renderer,texture,srcPortion,&destRect);
 }

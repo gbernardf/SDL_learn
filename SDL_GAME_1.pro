@@ -6,6 +6,7 @@ CONFIG -= qt
 INCLUDEPATH += /usr/include/SDL2
 LIBS += -lSDL2
 LIBS += -lSDL2_image
+LIBS += -lSDL2_ttf
 
 SOURCES += main.cpp \
     functions.cpp \
