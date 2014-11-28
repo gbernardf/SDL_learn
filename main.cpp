@@ -5,8 +5,7 @@
 #include "functions.h"
 #include "Sprite.h"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 400;
+
 const string IMG_PATH = "../FILES/imgs/";
 
 enum KeyPressSurfaces{
@@ -20,21 +19,21 @@ enum KeyPressSurfaces{
 
 int main(int argc, char* argv[]) {
 
+    if(argc <= 1){
+        std::cout<<"Arguments missing: WIDTH |  HEIGHT" <<std::endl;
+    }
 
+    const int SCREEN_WIDTH = atoi(argv[1]);
+    const int SCREEN_HEIGHT = atoi(argv[2]);
+    std::cout<< "SCREEN_WIDTH : " << SCREEN_WIDTH << std::endl;
+    std::cout<< "SCREEN_HEIGHT: " << SCREEN_HEIGHT << std::endl;
     functions toolbox(SCREEN_WIDTH, SCREEN_HEIGHT);
-    SDL_Texture* keyTextures[KEY_PRESS_SURFACE_TOTAL];
 
     //Render window
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
-
     SDL_Surface* screenSurface = NULL;
-    SDL_Texture* playerTex = NULL;
-    SDL_Texture* coinTex = NULL;
 
-    SDL_Rect topRightViewPort;
-    SDL_Rect topLeftViewPort;
-    SDL_Rect bottomViewPort;
     SDL_Rect totalViewPort;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -42,21 +41,6 @@ int main(int argc, char* argv[]) {
     } else {
 
         SDL_Event event;
-
-        topLeftViewPort.x = 0;
-        topLeftViewPort.y = 0;
-        topLeftViewPort.w = SCREEN_WIDTH / 2;
-        topLeftViewPort.h = 100;
-
-        topRightViewPort.x = SCREEN_WIDTH / 2;
-        topRightViewPort.y = 0;
-        topRightViewPort.w = SCREEN_WIDTH / 2;
-        topRightViewPort.h = 100;
-
-        bottomViewPort.x = 0;
-        bottomViewPort.y = 100;
-        bottomViewPort.w = SCREEN_WIDTH;
-        bottomViewPort.h = SCREEN_HEIGHT - 100;
 
         totalViewPort.x = 0;
         totalViewPort.y = 0;
@@ -69,41 +53,13 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_ADD);
         int imgFlags = IMG_INIT_PNG;
 
-
-
-
         IMG_Init(imgFlags);
         if (window == NULL) {
             printf("Window could not be created! SDL_Error:%s\n", SDL_GetError());
         } else {
 
-            string backPath = IMG_PATH + "back.png";
-            string playerPath = IMG_PATH + "_carreGob.png";
-            string upPath = IMG_PATH + "up_colorKey.png";
-            string lftPath = IMG_PATH + "lft_colorKey.png";
-            string riPath = IMG_PATH + "ri_colorKey.png";
-            string dwPath = IMG_PATH + "dw_colorKey.png";
-
             screenSurface = SDL_GetWindowSurface(window);
             toolbox.setScreenSurface(screenSurface);
-
-            Sprite* animTest = new Sprite(64,64);
-            animTest->updateTexture(toolbox.loadTexture(IMG_PATH + "anim_colorKey.png",renderer));
-            animTest->loadAnimations();
-
-            Sprite* animCoin = new Sprite(32,32);
-            animCoin->updateTexture(toolbox.loadTexture(IMG_PATH + "anim_coin_colorKey.png",renderer));
-            animCoin->setIdleAnimation();
-
-            playerTex = toolbox.loadTexture(playerPath,renderer);
-            coinTex = toolbox.loadTexture(IMG_PATH + "anim_coin_colorKey.png",renderer);
-
-            keyTextures[KEY_PRESS_SURFACE_DEFAULT] = toolbox.loadTexture(backPath,renderer);
-            keyTextures[KEY_PRESS_SURFACE_UP] = toolbox.loadTexture(upPath,renderer);
-            keyTextures[KEY_PRESS_SURFACE_LEFT] = toolbox.loadTexture(lftPath,renderer);
-            keyTextures[KEY_PRESS_SURFACE_RIGHT] = toolbox.loadTexture(riPath,renderer);
-            keyTextures[KEY_PRESS_SURFACE_DOWN] = toolbox.loadTexture(dwPath,renderer);
-
 
             bool run = true;
             do{
@@ -111,70 +67,20 @@ int main(int argc, char* argv[]) {
                 while(SDL_PollEvent(&event) != 0){
                     SDL_RenderClear(renderer);
                     SDL_RenderSetViewport(renderer,&totalViewPort);
-
-
-                    toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DEFAULT],NULL,renderer,0,0);
-                    int playerX = 304;
-                    int playerY = 50;
                     if(event.type == SDL_QUIT){
                         run = false;
-                    }/*else if(event.type == SDL_KEYDOWN){
+                    }else if(event.type == SDL_KEYDOWN){
 
-
-                        SDL_RenderSetViewport(renderer,&topRightViewPort);
                         switch(event.key.keysym.sym){
-
                             case SDLK_ESCAPE:
                             run = false;break;
-
-                            case SDLK_UP:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_UP],NULL,renderer,150,25);
-                            SDL_RenderSetViewport(renderer,&bottomViewPort);
-                            toolbox.renderTexture(playerTex,NULL,renderer,playerX ,playerY - 10);
-                            animTest->moveUp();
-                            animTest->render(renderer,0,0);
-                            break;
-
-                            case SDLK_DOWN:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_DOWN],NULL,renderer,150,25);
-                            SDL_RenderSetViewport(renderer,&bottomViewPort);
-                            toolbox.renderTexture(playerTex,NULL,renderer,playerX,playerY + 10);
-                            animTest->moveDown();
-                            animTest->render(renderer,0,0);
-                            break;
-
-                            case SDLK_LEFT:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_LEFT],NULL,renderer,150,25);
-                            SDL_RenderSetViewport(renderer,&bottomViewPort);
-                            toolbox.renderTexture(playerTex,NULL,renderer,playerX - 10,playerY);
-                            animTest->moveLeft();
-                            animTest->render(renderer,0,0);
-                            break;
-
-                            case SDLK_RIGHT:
-                            toolbox.renderTexture(keyTextures[KEY_PRESS_SURFACE_RIGHT],NULL,renderer,150,25);
-                            SDL_RenderSetViewport(renderer,&bottomViewPort);
-                            toolbox.renderTexture(playerTex,NULL,renderer,playerX + 10,playerY);
-                            animTest->moveRight();
-                            animTest->render(renderer,0,0);
-                            break;
-
                         }
 
-                    }*/else{
-                        SDL_RenderSetViewport(renderer,&bottomViewPort);
-                        toolbox.renderTexture(playerTex,NULL,renderer,playerX,playerY);
-                        //animTest->render(renderer,0,0);
-
-
-
+                    }else{
                     }
                     SDL_RenderPresent(renderer);
                     SDL_Delay(40);
                 }
-//                animCoin->idle();
-//                animCoin->render(renderer,0,0);
-                toolbox.renderTexture(coinTex,NULL,renderer,0,0);
                 SDL_RenderPresent(renderer);
                 SDL_Delay(40);
 
