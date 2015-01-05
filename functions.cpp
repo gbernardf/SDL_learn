@@ -19,8 +19,8 @@ void functions::setRenderer(SDL_Renderer* renderer){
 }
 
 void functions::setFont(string fontPath){
-    _font = TTF_OpenFont( fontPath.c_str(), 28 );
-}
+    _font = TTF_OpenFont( fontPath.c_str(), 40 );
+}//#include <SDL2/SDL_image.h>
 
 SDL_Surface* functions::loadImage(string imagePath){
     SDL_Surface* loadedImage = IMG_Load(imagePath.c_str());

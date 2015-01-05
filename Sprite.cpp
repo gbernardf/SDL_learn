@@ -1,13 +1,14 @@
 #include "Sprite.h"
 #include "functions.h"
 
-Sprite::Sprite()
-{
+Sprite::Sprite(){
     _width = 0;
     _height = 0;
     texture = NULL;
     _currentAnimFrame = NULL;
     frameNumber = 0;
+    moveDistance = 10;
+
 }
 
 Sprite::Sprite(int animWidth, int animHeight, SDL_Renderer *renderer){
@@ -19,6 +20,10 @@ Sprite::Sprite(int animWidth, int animHeight, SDL_Renderer *renderer){
     this->renderer = renderer;
     _currentAnimFrame = NULL;
     frameNumber = 0;
+    moveDistance = 10;
+}
+
+Sprite::~Sprite(){
 }
 
 int Sprite::width(){
@@ -87,27 +92,40 @@ void Sprite::moveUp(){
     _currentAnimFrame = moveUpAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
+    if(posY+32-moveDistance >=0)
+        posY -= moveDistance;
 }
 
 void Sprite::moveDown(){
     _currentAnimFrame = moveDownAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
+    if((posY+32)+moveDistance <=screenHeight)
+        posY += moveDistance;
 }
 
 void Sprite::moveLeft(){
     _currentAnimFrame = moveLeftAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
+    if(posX+32- moveDistance >=0)
+        posX -= moveDistance;
 }
 
 void Sprite::moveRight(){
     _currentAnimFrame = moveRightAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
+    if((posX+32) + moveDistance <=screenWidth)
+        posX += moveDistance;
 }
 
-void Sprite::render(int posX, int posY, double scale){
+void Sprite::getPos(int*x,int*y){
+    *x += posX;
+    *y += posY;
+}
+
+void Sprite::render(double scale){
     SDL_Rect destRect;
     destRect.x = posX;
     destRect.y = posY;
@@ -117,6 +135,24 @@ void Sprite::render(int posX, int posY, double scale){
         SDL_QueryTexture(texture,NULL,NULL,&destRect.w,&destRect.h);
     }
     SDL_RenderCopy(renderer,texture,_currentAnimFrame,&destRect);
+}
+
+void Sprite::setPos(int x, int y){
+    posX = x;
+    posY = y;
+}
+
+void Sprite::setBoundaries(int w, int h){
+    screenHeight = h;
+    screenWidth = w;
+}
+
+bool Sprite::hit(int x, int y){
+    if(x>=posX && x<=(posX+width())){
+        if(y>=posY && y<=posY+height())
+            return true;
+    }
+    return false;
 }
 
 SDL_Texture* Sprite::getText(){

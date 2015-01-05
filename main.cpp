@@ -1,63 +1,13 @@
 #include <SDL2/SDL.h>
-//#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include "functions.h"
 #include "Sprite.h"
 #include <sstream>
+#include "Game.h"
+
 
 const string IMG_PATH = "../FILES/imgs/";
-
-enum KeyPressSurfaces{
-    KEY_PRESS_SURFACE_DEFAULT,
-    KEY_PRESS_SURFACE_UP,
-    KEY_PRESS_SURFACE_LEFT,
-    KEY_PRESS_SURFACE_RIGHT,
-    KEY_PRESS_SURFACE_DOWN,
-    KEY_PRESS_SURFACE_TOTAL
-};
-
-void updateColors(int& r, int& g, int& b){
-    if(r == 255 && g == 1 && b< 255){
-        if(b+10 > 255){
-            b=255;
-        }else{
-            b+=10;
-        }
-
-    }else if(b==255 && g == 1 && r >1){
-        if(r-10 > 1){
-            r = 1;
-        }else{
-            r-=10;
-        }
-    }else if(r == 1 && b == 255 && g < 255){
-        if(g+10 > 255){
-            g = 255;
-        }else{
-            g+=10;
-        }
-    }else if(r == 1 && g == 255 && b > 1){
-        if(b-10<1){
-            b = 1;
-        }else{
-            b-=10;
-        }
-    }else if(b == 1 && g == 255 && r < 255){
-        if(r+10>255){
-            r = 255;
-        }else{
-            r+=10;
-        }
-    }else if(r==255 && b ==1 && g > 1){
-        if(g-10 < 1){
-            g = 1;
-        }else{
-            g-=10;
-        }
-    }
-
-}
 
 int main(int argc, char* argv[]) {
 
@@ -95,6 +45,7 @@ int main(int argc, char* argv[]) {
         totalViewPort.y = 0;
         totalViewPort.w = SCREEN_WIDTH;
         totalViewPort.h = SCREEN_HEIGHT;
+        bool gameTitle = true;
 
 
 
@@ -107,16 +58,25 @@ int main(int argc, char* argv[]) {
             screenSurface = SDL_GetWindowSurface(window);
             toolbox.setScreenSurface(screenSurface);
             toolbox.setFont("/usr/share/cups/fonts/FreeMonoBold.ttf");
+
+            Game game(SCREEN_WIDTH,SCREEN_HEIGHT);
+            game.setRenderer(renderer);
+            game.setToolbox(&toolbox);
+            game.init();
+
+
             Sprite* coin = new Sprite(32,32,renderer);
             coin->updateTexture(toolbox.loadTexture(IMG_PATH + "anim_coin_colorKey.png"));
             coin->setIdleAnimation();
+            coin->setPos((SCREEN_WIDTH/2 - coin->width()/2),(SCREEN_HEIGHT/2- coin->height()/2));
 
             SDL_Texture* back = toolbox.loadTexture(IMG_PATH + "back.png");
-            int r = 255;
-            int g = 1;
-            int b = 1;
-            SDL_Color textColor = {0,0,0};
-            SDL_Texture* text = toolbox.loadTextureFromText("Spin spin ! You devil coin from hell !!!",textColor);
+            Uint8 r = 255;
+            Uint8 g = 1;
+            Uint8 b = 1;
+            SDL_Color textColor = {r,g,b,1};
+            SDL_Texture* text = toolbox.loadTextureFromText("Coin Looter 1.0",textColor);
+            SDL_Texture* clickToGoText = toolbox.loadTextureFromText("Clic coin to launch the game",textColor);
 
             bool run = true;
             Uint32 startTime = SDL_GetTicks();
@@ -126,31 +86,48 @@ int main(int argc, char* argv[]) {
             do{
                 SDL_RenderClear(renderer);
                 SDL_RenderSetViewport(renderer,&totalViewPort);
-                while(SDL_PollEvent(&event) != 0){
+                if(gameTitle){
+                    while(SDL_PollEvent(&event) != 0){
 
-                    if(event.type == SDL_QUIT){
-                        run = false;
-                    }else if(event.type == SDL_KEYDOWN){
+                        if(event.type == SDL_QUIT){
+                            run = false;
+                        }else if(event.type == SDL_KEYDOWN){
 
-                        switch(event.key.keysym.sym){
+                            switch(event.key.keysym.sym){
                             case SDLK_ESCAPE:
-                            run = false;break;
-                        }
+                                run = false;break;
+                            }
 
-                    }else{
+                        }else if(event.type == SDL_MOUSEBUTTONDOWN){
+                            int x,y;
+                            SDL_GetMouseState(&x,&y);
+                            if(coin->hit(x,y)){
+                                gameTitle = false;
+                            }
+
+                        }
                     }
+                }else{
+                    game.handleEvent(&event);
                 }
                 toolbox.renderTexture(back,NULL,0,0);
-                coin->idle();
-                coin->render((SCREEN_WIDTH/2 - coin->width()),(SCREEN_HEIGHT/2- coin->height()),1);
-                toolbox.renderTexture(text,NULL,10,10);
-                fullTimeString.str("");
-                fullTimeString << timu << (SDL_GetTicks() - startTime);
-                timeText = toolbox.loadTextureFromText(fullTimeString.str().c_str(),textColor);
-                toolbox.renderTexture(timeText,NULL,10,350);
-//                updateColors(r,g,b);
-//                textColor = {r,g,b};
-//                text = toolbox.loadTextureFromText("Spin spin ! You devil coin from hell !!!",textColor);
+                if(gameTitle){
+                    coin->idle();
+                    coin->render(1);
+                    toolbox.renderTexture(text,NULL,10,10);
+                    toolbox.renderTexture(clickToGoText,NULL,10,350);
+                }else{
+                    game.update();
+                    game.render();
+                    if(game.gameDone()){
+                        gameTitle = true;
+                        game.reset();
+                    }
+                }
+//                fullTimeString.str("");
+//                fullTimeString << timu << (SDL_GetTicks() - startTime);
+//                timeText = toolbox.loadTextureFromText(fullTimeString.str().c_str(),textColor);
+//                toolbox.renderTexture(timeText,NULL,10,350);
                 SDL_RenderPresent(renderer);
                 SDL_Delay(40);
 

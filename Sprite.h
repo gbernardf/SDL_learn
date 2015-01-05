@@ -21,28 +21,31 @@ public:
     void updateTexture(SDL_Texture* newTexture);
     void loadAnimations();
     void setIdleAnimation();
-    void render( int posX, int posY, double scale);
+    void render(double scale);
+    void setPos(int x, int y);
     void idle();
     void moveUp();
     void moveDown();
     void moveLeft();
     void moveRight();
+    bool hit(int x, int y);
+    void setBoundaries(int w, int h);
+    void getPos(int*x,int*y);
     ~Sprite();
 private:
     SDL_Texture* texture;
     SDL_Renderer* renderer;
     int _width;
     int _height;
+    int moveDistance;
     int frameNumber;
     int animationFrameWidth;
     int animationFrameHeight;
+    int posX;
+    int posY;
+    int screenHeight;
+    int screenWidth;
 
-    //By convention we'll build sprite sheets like this:
-    // move down row
-    // move left row
-    // move right row
-    // move up row
-    // no idle animation for now
     SDL_Rect* moveDownAnimation[ANIMATION_FRAMES];
     SDL_Rect* moveLeftAnimation[ANIMATION_FRAMES];
     SDL_Rect* moveRightAnimation[ANIMATION_FRAMES];

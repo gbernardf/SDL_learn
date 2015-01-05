@@ -11,15 +11,16 @@ LIBS += -lSDL2_ttf
 SOURCES += main.cpp \
     functions.cpp \
     Sprite.cpp \
-    GameObject.cpp
-
-include(deployment.pri)
-qtcAddDeployment()
+    Game.cpp \
+    GameState.cpp \
+    TitleScreen.cpp
 
 HEADERS += \
     functions.h \
     Sprite.h \
-    GameObject.h
+    Game.h \
+    GameState.h \
+    TitleScreen.h
 
 
 
