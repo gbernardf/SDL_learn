@@ -13,6 +13,7 @@ class Sprite
 {
 public:
     Sprite();
+    ~Sprite();
     Sprite(int animWidth, int animHeight, SDL_Renderer* renderer);
     int width();
     int height();
@@ -31,7 +32,6 @@ public:
     bool hit(int x, int y);
     void setBoundaries(int w, int h);
     void getPos(int*x,int*y);
-    ~Sprite();
 private:
     SDL_Texture* texture;
     SDL_Renderer* renderer;

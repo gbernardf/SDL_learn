@@ -5,6 +5,10 @@ TitleScreen::TitleScreen(int width, int height){
     screenHeight = height;
 }
 
+TitleScreen::~TitleScreen(){
+    delete coin;
+}
+
 void TitleScreen::init(){
     coin = new Sprite(32,32,renderer);
     coin->updateTexture(toolbox->loadTexture(IMG_PATH + "anim_coin_colorKey.png"));
@@ -20,9 +24,14 @@ void TitleScreen::init(){
     clickToGoText = toolbox->loadTextureFromText("Clic coin to launch the game",textColor);
 }
 
-void TitleScreen::render(){
-    toolbox->renderTexture(back,NULL,0,0);
+bool TitleScreen::update(){
     coin->idle();
+    return false;
+}
+
+void TitleScreen::render(){
+
+    toolbox->renderTexture(back,NULL,0,0);
     coin->render(1);
     toolbox->renderTexture(text,NULL,10,10);
     toolbox->renderTexture(clickToGoText,NULL,10,350);
@@ -32,4 +41,21 @@ bool TitleScreen::hit(){
     int x,y;
     SDL_GetMouseState(&x,&y);
     return coin->hit(x,y);
+}
+
+bool TitleScreen::handleEvent(SDL_Event* event){
+    //const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+    while(SDL_PollEvent(event) != 0){
+        if(event->type == SDL_KEYDOWN){
+            if(event->key.keysym.sym == SDLK_ESCAPE){
+                states->clear();
+            }
+        }
+        if(event->type == SDL_MOUSEBUTTONDOWN){
+            if(hit()){
+                states->pop_back();
+            }
+        }
+    }
+    return false;
 }

@@ -13,9 +13,11 @@ class TitleScreen : public GameState
 {
 public:
     TitleScreen(int width, int height);
+    ~TitleScreen();
     void init();
-    void update();
+    bool update();
     void render();
+    bool handleEvent(SDL_Event* event);
     bool hit();
 private:
     SDL_Texture* back;

@@ -13,14 +13,16 @@ SOURCES += main.cpp \
     Sprite.cpp \
     Game.cpp \
     GameState.cpp \
-    TitleScreen.cpp
+    TitleScreen.cpp \
+    GameStateManager.cpp
 
 HEADERS += \
     functions.h \
     Sprite.h \
     Game.h \
     GameState.h \
-    TitleScreen.h
+    TitleScreen.h \
+    GameStateManager.h
 
 
 

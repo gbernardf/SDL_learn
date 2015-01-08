@@ -11,6 +11,9 @@ Sprite::Sprite(){
 
 }
 
+Sprite::~Sprite(){
+}
+
 Sprite::Sprite(int animWidth, int animHeight, SDL_Renderer *renderer){
     _width = 0;
     _height = 0;
@@ -21,9 +24,6 @@ Sprite::Sprite(int animWidth, int animHeight, SDL_Renderer *renderer){
     _currentAnimFrame = NULL;
     frameNumber = 0;
     moveDistance = 10;
-}
-
-Sprite::~Sprite(){
 }
 
 int Sprite::width(){

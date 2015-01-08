@@ -9,6 +9,9 @@ Game::Game(int width, int height){
     score = 0;
 }
 
+Game::~Game(){
+    delete player;
+}
 
 void Game::init(){
     initCoins();
@@ -39,9 +42,15 @@ void Game::initPlayer(){
 
 }
 
-void Game::handleEvent(SDL_Event* event){
+bool Game::handleEvent(SDL_Event* event){
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
     while(SDL_PollEvent(event) != 0){
+        if(event->type == SDL_KEYDOWN){
+            if(event->key.keysym.sym == SDLK_ESCAPE){
+                states->push_back(titleScreen);
+                return true;
+            }
+        }
     }
     if(currentKeyStates[SDL_SCANCODE_W]){
         player->moveUp();
@@ -52,13 +61,18 @@ void Game::handleEvent(SDL_Event* event){
     }else if(currentKeyStates[SDL_SCANCODE_D]){
         player->moveRight();
     }
+    return false;
 }
 
 bool Game::gameDone(){
     return coins.empty();
 }
 
-void Game::update(){
+void Game::setTitleScren(TitleScreen *screen){
+    titleScreen = screen;
+}
+
+bool Game::update(){
     int playerX = 32;
     int playerY = 32;
     player->getPos(&playerX,&playerY);
@@ -74,6 +88,7 @@ void Game::update(){
     }
 
     coins = updatedCoins;
+    return false;
 }
 void Game::render(){
     SDL_RenderClear(renderer);
