@@ -92,7 +92,7 @@ void Sprite::moveUp(){
     _currentAnimFrame = moveUpAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
-    if(posY+32-moveDistance >=0)
+    if(posY+32-moveDistance >= height()/8)
         posY -= moveDistance;
 }
 
@@ -100,7 +100,7 @@ void Sprite::moveDown(){
     _currentAnimFrame = moveDownAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
-    if((posY+32)+moveDistance <=screenHeight)
+    if((posY+32)+moveDistance <=screenHeight-height()/4)
         posY += moveDistance;
 }
 
@@ -108,7 +108,7 @@ void Sprite::moveLeft(){
     _currentAnimFrame = moveLeftAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
-    if(posX+32- moveDistance >=0)
+    if(posX+32- moveDistance >=width()/8)
         posX -= moveDistance;
 }
 
@@ -116,7 +116,7 @@ void Sprite::moveRight(){
     _currentAnimFrame = moveRightAnimation[frameNumber%4];
     frameNumber++;
     if(frameNumber > 40)frameNumber = 0;
-    if((posX+32) + moveDistance <=screenWidth)
+    if((posX+32) + moveDistance <=screenWidth-width()/8)
         posX += moveDistance;
 }
 

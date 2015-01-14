@@ -22,6 +22,7 @@ void TitleScreen::init(){
     SDL_Color textColor = {r,g,b,1};
     text = toolbox->loadTextureFromText("Coin Looter 1.0",textColor);
     clickToGoText = toolbox->loadTextureFromText("Clic coin to launch the game",textColor);
+    escToEsc = toolbox->loadTextureFromText("ESCAPE to quit.",textColor);
 }
 
 bool TitleScreen::update(){
@@ -31,10 +32,14 @@ bool TitleScreen::update(){
 
 void TitleScreen::render(){
 
-    toolbox->renderTexture(back,NULL,0,0);
+    //toolbox->renderTexture(back,NULL,0,0);
+    SDL_Rect fillRect = { 0, 0 ,screenWidth, screenHeight};
+    SDL_SetRenderDrawColor( renderer, 50, 50, 50, 0xFF );
+    SDL_RenderFillRect( renderer, &fillRect );
     coin->render(1);
     toolbox->renderTexture(text,NULL,10,10);
-    toolbox->renderTexture(clickToGoText,NULL,10,350);
+    toolbox->renderTexture(clickToGoText,NULL,10,325);
+    toolbox->renderTexture(escToEsc,NULL,10,360);
 }
 
 bool TitleScreen::hit(){
