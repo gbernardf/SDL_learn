@@ -24,6 +24,7 @@ private:
     Sprite* coin;
     SDL_Texture* text;
     SDL_Texture* clickToGoText;
+    SDL_Texture* escToEsc;
     int screenWidth;
     int screenHeight;
 

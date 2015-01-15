@@ -7,6 +7,8 @@
 #include "Game.h"
 #include "TitleScreen.h"
 
+const int FRAME_RATE = 40; //25 fps -> one frame every 40 millisec
+
 class GameStateManager
 {
 public:

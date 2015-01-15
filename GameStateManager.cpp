@@ -26,6 +26,7 @@ void GameStateManager::popBack(){
 void GameStateManager::run(){
 
     SDL_Event event;
+    Uint32 time = SDL_GetTicks();
 
     running = true;
     game = new Game(width,height);
