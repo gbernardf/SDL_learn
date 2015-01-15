@@ -4,6 +4,10 @@ GameState::GameState()
 {
 }
 
+GameState::~GameState(){
+
+}
+
 void GameState::setRenderer(SDL_Renderer *renderer){
     this->renderer = renderer;
 }
@@ -21,9 +25,9 @@ void GameState::render(){
 }
 
 bool GameState::update(){
-
+    return true;
 }
 
 bool GameState::handleEvent(SDL_Event *event){
-
+    return true;
 }

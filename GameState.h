@@ -9,6 +9,7 @@ class GameState
 {
 public:
     GameState();
+    ~GameState();
     void setRenderer(SDL_Renderer* renderer);
     void setToolbox(functions* toolbox);
     void setStatesVector(std::vector<GameState*> *states);

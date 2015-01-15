@@ -11,7 +11,7 @@
 
 const string COINPATH = "../FILES/imgs/anim_coin_colorKey.png";
 const string PALYERPATH = "../FILES/imgs/anim_colorKey.png";
-const int COINS_NUMBER = 15;
+const int COINS_NUMBER = 4;
 
 class Game : public GameState
 {

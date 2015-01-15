@@ -15,7 +15,7 @@ Game::~Game(){
 
 void Game::init(){
     initCoins();
-    initPlayer();
+    initPlayer();    
 }
 
 void Game::initCoins(){
@@ -101,6 +101,7 @@ void Game::render(){
         it++;
     }
 }
+
 
 void Game::renderScore(){
     SDL_Color textColor = {255,255,255,1};
