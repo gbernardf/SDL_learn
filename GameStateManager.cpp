@@ -54,10 +54,8 @@ void GameStateManager::run(){
     states.push_back(game);
     states.push_back(titleScreen);
 
-    bool pop = false;
     GameState* currentState;
     while(running && !states.empty()){
-        pop = false;
         SDL_RenderClear(renderer);
         currentState = states.back();
         currentState->handleEvent(&event);
