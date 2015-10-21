@@ -1,14 +1,20 @@
 #include "Sprite.h"
 #include "functions.h"
 
-Sprite::Sprite(){
-    _width = 0;
-    _height = 0;
-    texture = NULL;
-    _currentAnimFrame = NULL;
-    frameNumber = 0;
-    moveDistance = 10;
-
+Sprite::Sprite():
+  texture(NULL),
+  renderer(NULL),
+  _width(0),
+  _height(0),
+  moveDistance(10),
+  frameNumber(0),
+  animationFrameWidth(0),
+  animationFrameHeight(0),
+  posX(0),
+  posY(0),
+  screenHeight(0),
+  screenWidth(0)
+{
 }
 
 Sprite::~Sprite(){

@@ -1,11 +1,14 @@
 #include "GameState.h"
 
 GameState::GameState()
+  renderer(NULL),
+  toolbox(NULL),
+  states()
 {
 }
 
-GameState::~GameState(){
-
+GameState::~GameState()
+{
 }
 
 void GameState::setRenderer(SDL_Renderer *renderer){

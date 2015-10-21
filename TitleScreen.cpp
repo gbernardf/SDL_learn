@@ -1,8 +1,14 @@
 #include "TitleScreen.h"
 
-TitleScreen::TitleScreen(int width, int height){
-    screenWidth = width;
-    screenHeight = height;
+TitleScreen::TitleScreen(int width, int height):
+  back(NULL),
+  coin(NULL),
+  text(NULL),
+  clickToGoText(NULL),
+  escToEsc(NULL),
+  screenWidth(width),
+  screenHeight(height)
+{
 }
 
 TitleScreen::~TitleScreen(){

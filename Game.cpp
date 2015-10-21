@@ -3,11 +3,16 @@
 
 
 
-Game::Game(int width, int height){
-    screenWidth = width;
-    screenHeight = height;
-    score = 0;
-    won = false;
+Game::Game(int width, int height):
+screenWidth(width),
+screenHeight(height),
+coins(),
+player(NULL),
+scoreText(NULL),
+titleScreen(NULL),
+score(0),
+won(false)
+{
 }
 
 Game::~Game(){
@@ -16,7 +21,7 @@ Game::~Game(){
 
 void Game::init(){
     initCoins();
-    initPlayer();    
+    initPlayer();
 }
 
 void Game::initCoins(){
@@ -117,7 +122,7 @@ void Game::render(){
     while(it!=end){
         (*it)->render(1);
         it++;
-    }    
+    }
     player->render(1);
 }
 

@@ -4,10 +4,15 @@
 
 using namespace std;
 
-functions::functions(int width, int height) {
-    screenWidth = width;
-    screenHeight = height;
-    _font = NULL;
+functions::functions(int width, int height):
+  screenWidth(width),
+  screenHeight(height),
+  screen(NULL),
+  renderer(NULL),
+  loadedSurfaces(),
+  loadedTextures(),
+  _font(NULL)
+{
 }
 
 void functions::setScreenSurface(SDL_Surface* screen){
@@ -99,4 +104,3 @@ void functions::cleanSurfaces(){
         loadedTextures.pop_front();
     }
 }
-

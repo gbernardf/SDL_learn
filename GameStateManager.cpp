@@ -1,7 +1,15 @@
 #include "GameStateManager.h"
 
-GameStateManager::GameStateManager(){
-    running = false;
+GameStateManager::GameStateManager():
+renderer(NULL),
+toolbox(NULL),
+width(0),
+height(0),
+game(NULL),
+titleScreen(NULL),
+running(false),
+states()
+{
 }
 
 void GameStateManager::setUp(SDL_Renderer *renderer, functions *toolbox){
