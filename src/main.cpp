@@ -6,14 +6,17 @@
 
 int main(int argc, char* argv[]) {
 
-    if(argc <= 1){
-        std::cout<<"Arguments missing: WIDTH |  HEIGHT" <<std::endl;
+    int SCREEN_WIDTH = 800;
+    int SCREEN_HEIGHT = 600;
+
+    if(argc > 1){
+        const int SCREEN_WIDTH = atoi(argv[1]);
+        const int SCREEN_HEIGHT = atoi(argv[2]);
+        std::cout<< "SCREEN_WIDTH : " << SCREEN_WIDTH << std::endl;
+        std::cout<< "SCREEN_HEIGHT: " << SCREEN_HEIGHT << std::endl;
     }
 
-    const int SCREEN_WIDTH = atoi(argv[1]);
-    const int SCREEN_HEIGHT = atoi(argv[2]);
-    std::cout<< "SCREEN_WIDTH : " << SCREEN_WIDTH << std::endl;
-    std::cout<< "SCREEN_HEIGHT: " << SCREEN_HEIGHT << std::endl;
+
     functions toolbox(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     //Render window
